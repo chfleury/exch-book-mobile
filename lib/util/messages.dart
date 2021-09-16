@@ -1,0 +1,1 @@
+static const exchangeErrorMessage = 'Erro ao efetuar a troca';
