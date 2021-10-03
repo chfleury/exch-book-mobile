@@ -6,7 +6,7 @@ class Constants {
   static const title = 'ExchBook';
 
   static const login = 'Entrar';
-  static const register = 'Registrar';
+  static const register = 'Cadastrar';
   static const dontHaveAccount = 'Ainda não tem uma conta? Clique aqui!';
 
   static const primaryColor = const Color(0xFF295387);

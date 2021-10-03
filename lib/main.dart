@@ -1,5 +1,6 @@
 import 'package:exch_book/util/constants.dart';
 import 'package:exch_book/views/login_page.dart';
+import 'package:exch_book/views/register.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(),
+      home: RegisterPage(),
     );
   }
 }
