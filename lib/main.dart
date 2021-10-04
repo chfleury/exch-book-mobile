@@ -1,11 +1,20 @@
+import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
 import 'package:exch_book/views/login_page.dart';
 import 'package:exch_book/views/register.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
+  final x = ApiService();
+
+  await x.createUser(
+      password: '123',
+      name: 'jairo',
+      email: 'a@gmai.com',
+      phone: '912912912',
+      city: 'anapolis');
 }
 
 class MyApp extends StatelessWidget {
