@@ -1,5 +1,6 @@
 import 'package:exch_book/models/book.dart';
 import 'package:exch_book/util/constants.dart';
+import 'package:exch_book/widgets/offer_dialog.dart';
 import 'package:flutter/material.dart';
 
 class BookDetailsPage extends StatelessWidget {
@@ -83,7 +84,13 @@ class BookDetailsPage extends StatelessWidget {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       primary: Constants.secondaryColor),
-                  onPressed: () => {},
+                  onPressed: () => {
+                        showDialog(
+                            context: context,
+                            builder: (ctx) {
+                              return OfferDialog(book);
+                            })
+                      },
                   child: Text(
                     'Propor troca',
                     style: TextStyle(fontSize: 20),

@@ -1,27 +1,38 @@
 import 'dart:io';
 
 import 'package:exch_book/controllers/add_book_controller.dart';
-import 'package:exch_book/controllers/edit_profile_controller.dart';
 import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:image_picker/image_picker.dart';
 
-class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({Key? key}) : super(key: key);
+class AddBookPage extends StatefulWidget {
+  const AddBookPage({Key? key}) : super(key: key);
 
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfilePageState extends State<AddBookPage> {
   final apiService = ApiService();
-  late EditProfileControler controller;
+  late AddBookController controller;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
-    controller = EditProfileControler(apiService);
+    controller = AddBookController(apiService);
     super.initState();
+  }
+
+  _pickImage() async {
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    File file = File(photo!.path);
+
+    bool x = controller.upload(file);
+    if (x) {
+      controller.picState.value = 'done';
+    }
   }
 
   @override
@@ -31,15 +42,54 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Constants.primaryColor,
-        title: Text('Editar Perfil'),
+        title: Text('Adicionar Livro'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Form(
+              key: controller.formKey,
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Obx(() {
+                    if (controller.picState.value != 'done') {
+                      return Container(
+                        width: size.width * 0.6,
+                        height: size.height * 0.08,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: Constants.primaryColor),
+                            onPressed: _pickImage,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Adicione uma Foto'),
+                                Icon(Icons.camera),
+                              ],
+                            )),
+                      );
+                    } else {
+                      return Container(
+                        width: size.width * 0.6,
+                        height: size.height * 0.08,
+                        child: ElevatedButton(
+                            style:
+                                ElevatedButton.styleFrom(primary: Colors.green),
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text('Foto adicionada'),
+                                Icon(Icons.camera),
+                              ],
+                            )),
+                      );
+                    }
+                  }),
                   SizedBox(
                     height: 30,
                   ),
@@ -53,9 +103,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       validator: (input) =>
                           input!.length < 1 ? 'Não pode estar vazio' : null,
                       decoration: InputDecoration(
-                        labelText: 'Nome',
+                        labelText: 'Título',
                       ),
-                      onSaved: (input) => controller.name = input!,
+                      onSaved: (input) => controller.title = input!,
                     ),
                   ),
                   Padding(
@@ -68,9 +118,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       validator: (input) =>
                           input!.length < 1 ? 'Não pode estar vazio' : null,
                       decoration: InputDecoration(
-                        labelText: 'Email',
+                        labelText: 'Descrição',
                       ),
-                      onSaved: (input) => controller.email = input!,
+                      onSaved: (input) => controller.description = input!,
                     ),
                   ),
                   Padding(
@@ -83,9 +133,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       validator: (input) =>
                           input!.length < 1 ? 'Não pode estar vazio' : null,
                       decoration: InputDecoration(
-                        labelText: 'Localização',
+                        labelText: 'Conservação',
                       ),
-                      onSaved: (input) => controller.city = input!,
+                      onSaved: (input) => controller.conservationState = input!,
                     ),
                   ),
                   Padding(
@@ -95,43 +145,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     ),
                     child: TextFormField(
                       cursorColor: Colors.pink,
-                      obscureText: true,
                       validator: (input) =>
                           input!.length < 1 ? 'Não pode estar vazio' : null,
                       decoration: InputDecoration(
-                        labelText: 'Senha',
+                        labelText: 'Categoria',
                       ),
-                      onSaved: (input) => controller.password = input!,
+                      onSaved: (input) => controller.category = input!,
                     ),
                   ),
-                  SizedBox(height: size.height * 0.25),
+                  SizedBox(
+                    height: 30,
+                  ),
                   Container(
                     width: size.width * 0.8,
                     height: size.height * 0.08,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Constants.secondaryColor),
-                        onPressed: controller.save,
+                        onPressed: controller.addBook,
                         child: Text(
-                          "Salvar",
+                          "Adicionar Livro",
                           style: TextStyle(fontSize: 20),
                         )),
                   ),
                   SizedBox(
                     height: 30,
-                  ),
-                  Obx(() {
-                    if (controller.state.value == 'loading') {
-                      return LinearProgressIndicator();
-                    } else if (controller.state.value == 'error') {
-                      return Text(
-                        'Erro, tente novamente',
-                        style: TextStyle(color: Colors.red),
-                      );
-                    } else {
-                      return Container();
-                    }
-                  }),
+                  )
                 ],
               ),
             )

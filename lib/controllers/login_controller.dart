@@ -27,7 +27,9 @@ class LoginController {
       }
 
       final box = GetStorage();
-      box.write('token', token);
+      box.write('token', token[0]);
+
+      box.write('user_id', token[1]);
 
       state.value = '';
       Get.off(() => HomePage());
