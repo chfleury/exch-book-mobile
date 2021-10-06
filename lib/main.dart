@@ -1,7 +1,8 @@
 import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
+import 'package:exch_book/views/home_page.dart';
 import 'package:exch_book/views/login_page.dart';
-import 'package:exch_book/views/register.dart';
+import 'package:exch_book/views/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Constants.primaryColor,
           secondaryHeaderColor: Constants.secondaryColor),
-      home: LoginPage(),
+      home: HomePage(),
     );
   }
 }
