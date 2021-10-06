@@ -1,5 +1,9 @@
+import 'package:exch_book/controllers/login_controller.dart';
+import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
+import 'package:exch_book/views/register.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -9,20 +13,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _senha = '';
-
-  _submit() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      // _loginBloc.add(Login(email: _email, senha: _senha));
-    }
-  }
+  final apiService = ApiService();
+  late LoginController controller;
 
   @override
   void initState() {
-    // _loginBloc = LoginBloc(repository);
+    controller = LoginController(apiService);
     super.initState();
   }
 
@@ -49,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white),
             ),
             Form(
-              key: _formKey,
+              key: controller.formKey,
               child: Column(
                 children: <Widget>[
                   Padding(
@@ -69,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                           labelStyle: TextStyle(
                             color: Colors.white,
                           )),
-                      onSaved: (input) => _email = input!,
+                      onSaved: (input) => controller.email = input!,
                     ),
                   ),
                   Padding(
@@ -87,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                       decoration: InputDecoration(
                           labelText: 'Senha',
                           labelStyle: TextStyle(color: Colors.white)),
-                      onSaved: (input) => _senha = input!,
+                      onSaved: (input) => controller.password = input!,
                     ),
                   ),
                   SizedBox(
@@ -99,38 +95,33 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Constants.secondaryColor),
-                        onPressed: () => {},
+                        onPressed: controller.login,
                         child: Text(
                           Constants.login,
                           style: TextStyle(fontSize: 20),
                         )),
-                  ), // BlocListener<LoginBloc, LoginState>(
-                  //   bloc: _loginBloc,
-                  //   listener: (context, state) {
-                  //     if (state is LoginLoaded) {
-                  //       Navigator.of(context)
-                  //           .pushReplacementNamed(HomeScreen.id);
-                  //     } else if (state is LoginError) {
-                  //       print('Usuario ou senha invalidos');
-                  //     }
-                  //   },
-                  //   child: BlocBuilder<LoginBloc, LoginState>(
-                  //       bloc: _loginBloc,
-                  //       builder: (context, state) {
-                  //         if (state is LoginLoading) {
-                  //           return Center(
-                  //             child: LinearProgressIndicator(),
-                  //           );
-                  //         }
-                  //         return GradientButton(
-                  //             label: 'Entrar', onPressed: _submit);
-                  //       }),
-                  // ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Obx(() {
+                    if (controller.state.value == 'loading') {
+                      return LinearProgressIndicator();
+                    } else if (controller.state.value == 'error') {
+                      return Text(
+                        'Verifique suas credenciais ou conexão com a internet',
+                        style: TextStyle(color: Colors.red),
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
+
                   SizedBox(
                     height: 10,
                   ),
                   TextButton(
-                      onPressed: () => {},
+                      onPressed: () => {Get.to(RegisterPage())},
                       child: Text(
                         Constants.dontHaveAccount,
                         style: TextStyle(color: Colors.white),
