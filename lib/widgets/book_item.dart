@@ -1,5 +1,6 @@
 import 'package:exch_book/models/book.dart';
 import 'package:exch_book/util/constants.dart';
+import 'package:exch_book/views/book_details_page.dart';
 import 'package:exch_book/views/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -14,7 +15,7 @@ class BookItem extends StatelessWidget {
     var size = MediaQuery.of(context).size;
 
     return InkWell(
-      onTap: () => {Get.to(RegisterPage())},
+      onTap: () => {Get.to(BookDetailsPage(book))},
       child: Card(
         child: Row(
           children: [
