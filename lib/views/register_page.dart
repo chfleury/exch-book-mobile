@@ -115,7 +115,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: TextFormField(
                           style: TextStyle(color: Colors.white),
                           validator: (input) =>
-                              (input!.length > 5 && input.trim().length > 0)
+                              (input!.length > 3 && input.trim().length > 0)
                                   ? null
                                   : 'Por favor insira uma cidade válida',
                           decoration: InputDecoration(

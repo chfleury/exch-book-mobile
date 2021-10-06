@@ -5,8 +5,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:exch_book/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
 
-class RegisterController {
-  RegisterController(this.api);
+class EditProfileControler {
+  EditProfileControler(this.api);
 
   final formKey = GlobalKey<FormState>();
   final ApiService api;
@@ -18,13 +18,12 @@ class RegisterController {
   String phone = '';
   String password = '';
 
-  register() async {
+  save() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
-      print(email + ' ' + password);
       state.value = 'loading';
 
-      final userId = await api.createUser(
+      final userId = await api.editUser(
           email: email,
           phone: phone,
           name: name,
@@ -32,11 +31,10 @@ class RegisterController {
           city: city);
 
       if (userId == 'error') {
-        state.value = 'error';
+        state.value = 'err or';
         return;
       }
 
-      state.value = '';
       Get.back();
     }
   }

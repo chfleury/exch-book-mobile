@@ -1,5 +1,6 @@
 import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
+import 'package:exch_book/views/add_book_page.dart';
 import 'package:exch_book/views/home_page.dart';
 import 'package:exch_book/views/login_page.dart';
 import 'package:exch_book/views/register_page.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primaryColor: Constants.primaryColor,
           secondaryHeaderColor: Constants.secondaryColor),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
