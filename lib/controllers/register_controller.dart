@@ -1,36 +1,46 @@
 import 'package:exch_book/views/home_page.dart';
+import 'package:exch_book/views/register_page.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:exch_book/services/rest_api_service.dart';
 import 'package:flutter/material.dart';
 
-class LoginController {
-  LoginController(this.api);
+class RegisterController {
+  RegisterController(this.api);
 
   final formKey = GlobalKey<FormState>();
   final ApiService api;
   var state = ''.obs;
 
   String email = '';
+  String name = '';
+  String city = '';
+  String phone = '';
   String password = '';
 
-  login() async {
+  register() async {
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       print(email + ' ' + password);
       state.value = 'loading';
 
-      final token = await api.login(email: email, password: password);
-      if (token == 'error') {
+      final userId = await api.createUser(
+          email: email,
+          phone: phone,
+          name: name,
+          password: password,
+          city: city);
+
+      if (userId == 'error') {
         state.value = 'error';
         return;
       }
 
       final box = GetStorage();
-      box.write('token', token);
+      box.write('user_id', userId);
 
       state.value = '';
-      Get.off(() => HomePage());
+      Get.back();
     }
   }
 }

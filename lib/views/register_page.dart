@@ -1,5 +1,8 @@
+import 'package:exch_book/controllers/register_controller.dart';
+import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -9,20 +12,12 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final _formKey = GlobalKey<FormState>();
-  String _email = '';
-  String _senha = '';
-
-  _submit() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      // _loginBloc.add(Login(email: _email, senha: _senha));
-    }
-  }
+  final apiService = ApiService();
+  late RegisterController controller;
 
   @override
   void initState() {
-    // _loginBloc = LoginBloc(repository);
+    controller = RegisterController(apiService);
     super.initState();
   }
 
@@ -51,7 +46,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.white),
                 ),
                 Form(
-                  key: _formKey,
+                  key: controller.formKey,
                   child: Column(
                     children: <Widget>[
                       Padding(
@@ -71,7 +66,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               labelStyle: TextStyle(
                                 color: Colors.white,
                               )),
-                          onSaved: (input) => _email = input!,
+                          onSaved: (input) => controller.email = input!,
                         ),
                       ),
                       Padding(
@@ -90,10 +85,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               labelStyle: TextStyle(
                                 color: Colors.white,
                               )),
-                          onSaved: (input) => _email = input!,
+                          onSaved: (input) => controller.name = input!,
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 30,
@@ -110,10 +104,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               labelStyle: TextStyle(
                                 color: Colors.white,
                               )),
-                          onSaved: (input) => _email = input!,
+                          onSaved: (input) => controller.phone = input!,
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 30,
@@ -130,10 +123,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               labelStyle: TextStyle(
                                 color: Colors.white,
                               )),
-                          onSaved: (input) => _email = input!,
+                          onSaved: (input) => controller.city = input!,
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 30,
@@ -149,11 +141,26 @@ class _RegisterPageState extends State<RegisterPage> {
                           decoration: InputDecoration(
                               labelText: 'Senha',
                               labelStyle: TextStyle(color: Colors.white)),
-                          onSaved: (input) => _senha = input!,
+                          onSaved: (input) => controller.password = input!,
                         ),
                       ),
                       SizedBox(
-                        height: 30,
+                        height: 20,
+                      ),
+                      Obx(() {
+                        if (controller.state.value == 'loading') {
+                          return LinearProgressIndicator();
+                        } else if (controller.state.value == 'error') {
+                          return Text(
+                            'Erro, verifique se email está em uso e sua conexão.',
+                            style: TextStyle(color: Colors.red),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }),
+                      SizedBox(
+                        height: 10,
                       ),
                       Container(
                         width: size.width * 0.8,
@@ -161,45 +168,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 primary: Constants.secondaryColor),
-                            onPressed: () => {},
+                            onPressed: controller.register,
                             child: Text(
                               Constants.register,
                               style: TextStyle(fontSize: 20),
                             )),
-                      ), // BlocListener<LoginBloc, LoginState>(
-                      //   bloc: _loginBloc,
-                      //   listener: (context, state) {
-                      //     if (state is LoginLoaded) {
-                      //       Navigator.of(context)
-                      //           .pushReplacementNamed(HomeScreen.id);
-                      //     } else if (state is LoginError) {
-                      //       print('Usuario ou senha invalidos');
-                      //     }
-                      //   },
-                      //   child: BlocBuilder<LoginBloc, LoginState>(
-                      //       bloc: _loginBloc,
-                      //       builder: (context, state) {
-                      //         if (state is LoginLoading) {
-                      //           return Center(
-                      //             child: LinearProgressIndicator(),
-                      //           );
-                      //         }
-                      //         return GradientButton(
-                      //             label: 'Entrar', onPressed: _submit);
-                      //       }),
-                      // ),
+                      ),
                       SizedBox(
                         height: 10,
                       ),
-
-                      // Row(
-                      //   crossAxisAlignment: CrossAxisAlignment.center,
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: <Widget>[
-                      //     Text('Ainda não possui uma conta?'),
-                      //     // _buildRegisterButton(),
-                      //   ],
-                      // ),
                     ],
                     mainAxisSize: MainAxisSize.min,
                   ),
@@ -212,30 +189,3 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 }
-
-// _buildRegisterButton() {
-//   return Builder(builder: (context) {
-//     return TextButton(
-//       onPressed: () async {
-//         var response = await Navigator.of(context).pushNamed(RegisterScreen.id);
-//         if (response) {
-//           Scaffold.of(context).showSnackBar(SnackBar(
-//             content: Text(
-//               'Conta criada com Sucesso',
-//               style: TextStyle(
-//                 fontSize: 18,
-//               ),
-//             ),
-//             backgroundColor: Colors.green,
-//           ));
-//         }
-//       },
-//       child: Text(
-//         'Registre-se',
-//         style: TextStyle(
-//           color: Colors.pink,
-//         ),
-//       ),
-//     );
-//   });
-// }

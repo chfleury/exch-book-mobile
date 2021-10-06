@@ -1,7 +1,7 @@
 import 'package:exch_book/controllers/login_controller.dart';
 import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
-import 'package:exch_book/views/register.dart';
+import 'package:exch_book/views/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -116,7 +116,6 @@ class _LoginPageState extends State<LoginPage> {
                       return Container();
                     }
                   }),
-
                   SizedBox(
                     height: 10,
                   ),
@@ -126,14 +125,6 @@ class _LoginPageState extends State<LoginPage> {
                         Constants.dontHaveAccount,
                         style: TextStyle(color: Colors.white),
                       ))
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Text('Ainda não possui uma conta?'),
-                  //     // _buildRegisterButton(),
-                  //   ],
-                  // ),
                 ],
                 mainAxisSize: MainAxisSize.min,
               ),
@@ -144,30 +135,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-
-// _buildRegisterButton() {
-//   return Builder(builder: (context) {
-//     return TextButton(
-//       onPressed: () async {
-//         var response = await Navigator.of(context).pushNamed(RegisterScreen.id);
-//         if (response) {
-//           Scaffold.of(context).showSnackBar(SnackBar(
-//             content: Text(
-//               'Conta criada com Sucesso',
-//               style: TextStyle(
-//                 fontSize: 18,
-//               ),
-//             ),
-//             backgroundColor: Colors.green,
-//           ));
-//         }
-//       },
-//       child: Text(
-//         'Registre-se',
-//         style: TextStyle(
-//           color: Colors.pink,
-//         ),
-//       ),
-//     );
-//   });
-// }
