@@ -45,6 +45,32 @@ class ApiService {
     }
   }
 
+  Future fetchBooks2() async {
+    final box = GetStorage();
+    var id = box.read('user_id');
+
+    final url = Uri.parse('$baseUrl/bookuser/$id');
+    final response = await client.get(url, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+
+      List<dynamic> responseData = body;
+
+      print(responseData[0]);
+      List<Book> books = [];
+      responseData.forEach((dynamic singleExercicio) {
+        books.add(Book.fromJson(singleExercicio));
+      });
+
+      return books;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
   Future fetchBooks() async {
     final box = GetStorage();
     var id = box.read('user_id');
@@ -56,20 +82,19 @@ class ApiService {
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      late List<Book> books = [];
 
       List<dynamic> responseData = body['rows'];
 
       print(responseData[0]);
-      List<Book> fetchedExercicios = [];
-      responseData.forEach((dynamic singleExercicio) {
-        fetchedExercicios.add(Book.fromJson(singleExercicio));
+      List<Book> books = [];
+      responseData.forEach((dynamic x) {
+        books.add(Book.fromJson(x));
       });
 
       print('aaaaaaaaaaa');
-      print(fetchedExercicios[0]);
+      print(books[0]);
 
-      return fetchedExercicios;
+      return books;
     } else {
       throw Exception('Failed to load album');
     }
@@ -155,6 +180,34 @@ class ApiService {
       'name': name,
       'password': password,
       'location': city
+    };
+
+    try {
+      final response = await client.post(url,
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(data));
+
+      return jsonDecode(response.body)['id'];
+    } catch (e) {
+      return 'error';
+    }
+  }
+
+  Future createOffer({
+    @required userfrom,
+    @required userto,
+    @required bookfrom,
+    @required bookto,
+  }) async {
+    final url = Uri.parse('$baseUrl/offers');
+    Map<String, dynamic> data = {
+      'user_from_id': userfrom,
+      'user_to_id': userto,
+      'book_from_id': bookfrom,
+      'book_to_id': bookto.id,
+      'is_accepted': false
     };
 
     try {
