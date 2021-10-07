@@ -42,11 +42,17 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(
+              height: 60,
+            ),
             Center(
-              child: Text(
-                controller.name,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
-              ),
+              child: LayoutBuilder(builder: (context, constraint) {
+                return new Icon(
+                  Icons.person_pin,
+                  size: 90,
+                  color: Colors.grey,
+                );
+              }),
             ),
             SizedBox(
               height: 10,
@@ -60,7 +66,10 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 30,
             ),
             Center(
-              child: Text('Livros que querem trocar com você:'),
+              child: Text(
+                'Livros que querem trocar com você:',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
             Obx(() {
               if (controller.state.value == 'sucess') {
@@ -69,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     itemCount: controller.offers.length,
                     itemBuilder: (ctx, index) {
                       final book = controller.offers[index]['book_from'];
-                      print(book);
+
                       return OfferItem(
                           phone: controller.offers[index]['user_from']['phone'],
                           offerId: controller.offers[index]['id'],
@@ -78,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             category: book['category'],
                             description: book['description'],
                             id: 1,
-                            imagePath: '82a53a9b7c289d6a1cec4227c89d3697.jpg',
+                            imagePath: book[' image']['path'],
                             conservationState: book['conservation_state'],
                             location: controller.offers[index]['user_from']
                                 ['location'],
