@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Constants {
-  static const BASE_URL = '207.128.2.29:3333';
+  static const BASE_URL = 'http://10.0.2.2:3333';
 
   static const title = 'ExchBook';
 

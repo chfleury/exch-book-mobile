@@ -22,7 +22,9 @@ class BookItem extends StatelessWidget {
             Container(
                 padding: EdgeInsets.all(size.height * 0.02),
                 height: size.height * 0.3,
-                child: Image.asset('images/book.jpg')),
+                width: size.width * 0.4,
+                child: Image.network(
+                    Constants.BASE_URL + '/files/' + book.imagePath)),
             Container(
               height: size.height * 0.3,
               child: Column(

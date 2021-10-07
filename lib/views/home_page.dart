@@ -24,7 +24,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     controller = HomeController(apiService);
+    fetchBooks();
     super.initState();
+  }
+
+  fetchBooks() async {
+    await controller.fetch();
   }
 
   @override
@@ -55,30 +60,14 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(color: Colors.red),
           );
         } else if (controller.state.value == 'sucess') {
+          print('sucess');
           return ListView.builder(
             itemBuilder: (context, index) {
-              return BookItem(
-                Book(
-                  location: 'Anápolis',
-                  conservationState: 'novo',
-                  title: 'O nome do vento',
-                  category: 'Fantasia',
-                  isActive: true,
-                  description: 'livro maneiro',
-                  id: 1,
-                  userId: 1,
-                  pictureId: 1,
-                ),
-              );
+              print(controller.books);
+              return BookItem(controller.books[index]);
             },
-            itemCount: 10,
+            itemCount: controller.books.length,
           );
-          // return ListView.builder(
-          //   itemBuilder: (context, index) {
-          //     return BookItem(controller.books[index]);
-          //   },
-          //   itemCount: controller.books.length,
-          // );
         } else {
           return Container();
         }

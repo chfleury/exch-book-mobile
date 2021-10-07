@@ -25,7 +25,8 @@ class BookDetailsPage extends StatelessWidget {
             child: Container(
                 padding: EdgeInsets.all(size.height * 0.02),
                 height: size.height * 0.4,
-                child: Image.asset('images/book.jpg')),
+                child: Image.network(
+                    Constants.BASE_URL + '/files/' + book.imagePath)),
           ),
           Center(
             child: Text(
