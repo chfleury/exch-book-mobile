@@ -1,3 +1,4 @@
+import 'package:exch_book/models/book.dart';
 import 'package:exch_book/views/home_page.dart';
 import 'package:exch_book/views/register_page.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ class RegisterController {
   final formKey = GlobalKey<FormState>();
   final ApiService api;
   var state = ''.obs;
+  late List<Book> books;
 
   String email = '';
   String name = '';

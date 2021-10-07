@@ -71,6 +71,48 @@ class ApiService {
     }
   }
 
+  Future acceptOffer(offerId) async {
+    final url = Uri.parse('$baseUrl/offers/$offerId');
+
+    Map<String, dynamic> data = {"is_accepted": true};
+    final response = await client.put(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future fetchOffers(id) async {
+    final url = Uri.parse('$baseUrl/offers/?user_to_id=$id&is_accepted=false');
+    final response = await client.get(url, headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    });
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+
+      List<dynamic> responseData = body;
+
+      print(responseData[0]);
+      List<Map<String, dynamic>> offers = [];
+      responseData.forEach((dynamic singleExercicio) {
+        offers.add(singleExercicio);
+      });
+
+      return offers;
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
   Future fetchBooks() async {
     final box = GetStorage();
     var id = box.read('user_id');

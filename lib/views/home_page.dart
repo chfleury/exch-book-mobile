@@ -4,6 +4,7 @@ import 'package:exch_book/services/rest_api_service.dart';
 import 'package:exch_book/util/constants.dart';
 import 'package:exch_book/views/add_book_page.dart';
 import 'package:exch_book/views/edit_profile_page.dart';
+import 'package:exch_book/views/profile_page.dart';
 import 'package:exch_book/widgets/book_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).primaryColor,
         leading: IconButton(
           icon: Icon(Icons.person_outlined),
-          onPressed: () => Get.to(EditProfilePage()),
+          onPressed: () => Get.to(ProfilePage()),
         ),
         title: Text('Livros disponíveis'),
         centerTitle: true,
