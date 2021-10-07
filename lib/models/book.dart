@@ -10,6 +10,7 @@ class Book {
   late String conservationState;
   late bool isActive;
   late String location;
+  late String imagePath;
 
   Book(
       {required this.id,
@@ -20,18 +21,21 @@ class Book {
       required this.description,
       required this.conservationState,
       required this.isActive,
-      required this.location});
+      required this.location,
+      required this.imagePath});
 
-  Book.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    userId = json['user_id'];
-    pictureId = json['picture_id'];
-    category = json['category'];
-    title = json['title'];
-    description = json['description'];
-    conservationState = json['conservation_state'];
-    isActive = json['is_active'];
-    location = json['location'];
+  static Book fromJson(Map<String, dynamic> json) {
+    return Book(
+        id: json['id'],
+        userId: json['user_id'],
+        pictureId: json['image_id'],
+        category: json['category'],
+        title: json['title'],
+        description: json['description'],
+        conservationState: json['conservation_state'],
+        isActive: json['is_active'],
+        location: json['user']['location'],
+        imagePath: json['image']['path']);
   }
 
   Map<String, dynamic> toJson() {

@@ -10,14 +10,14 @@ class HomeController {
 
   final ApiService api;
   var state = 'sucess'.obs;
-  var books = [].obs;
+  late List<Book> books;
 
   fetch() async {
     state.value = 'loading';
 
     try {
       books = await api.fetchBooks();
-      state.value = 'loaded';
+      state.value = 'sucess';
     } catch (e) {
       state.value = 'error';
     }

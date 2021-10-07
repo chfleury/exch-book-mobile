@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:exch_book/util/constants.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const baseUrl = 'http://10.0.2.2:3333';
+  static const baseUrl = Constants.BASE_URL;
   final client = http.Client();
 
   Future login({
@@ -45,18 +46,30 @@ class ApiService {
   }
 
   Future fetchBooks() async {
-    final url = Uri.parse('$baseUrl/books');
+    final box = GetStorage();
+    var id = box.read('user_id');
 
+    final url = Uri.parse('$baseUrl/booknotuser/$id');
     final response = await client.get(url, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     });
 
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
-      List<Book> books = [];
-      body.forEach((e) => {books.add(Book.fromJson(e))});
+      late List<Book> books = [];
 
-      return books;
+      List<dynamic> responseData = body['rows'];
+
+      print(responseData[0]);
+      List<Book> fetchedExercicios = [];
+      responseData.forEach((dynamic singleExercicio) {
+        fetchedExercicios.add(Book.fromJson(singleExercicio));
+      });
+
+      print('aaaaaaaaaaa');
+      print(fetchedExercicios[0]);
+
+      return fetchedExercicios;
     } else {
       throw Exception('Failed to load album');
     }
