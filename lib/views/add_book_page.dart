@@ -143,15 +143,34 @@ class _EditProfilePageState extends State<AddBookPage> {
                       horizontal: 30,
                       vertical: 10,
                     ),
-                    child: TextFormField(
-                      cursorColor: Colors.pink,
-                      validator: (input) =>
-                          input!.length < 1 ? 'Não pode estar vazio' : null,
-                      decoration: InputDecoration(
-                        labelText: 'Categoria',
-                      ),
-                      onSaved: (input) => controller.category = input!,
+                    child: DropdownButton<String>(
+                      value: controller.category,
+                      items: <String>[
+                        'Fantasia',
+                        'Drama',
+                        'Terror',
+                        'Programação'
+                      ].map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (_) {
+                        print(_);
+
+                        controller.category = _!;
+                      },
                     ),
+                    //  TextFormField(
+                    //   cursorColor: Colors.pink,
+                    //   validator: (input) =>
+                    //       input!.length < 1 ? 'Não pode estar vazio' : null,
+                    //   decoration: InputDecoration(
+                    //     labelText: 'Categoria',
+                    //   ),
+                    //   onSaved: (input) => controller.category = input!,
+                    // ),
                   ),
                   SizedBox(
                     height: 30,

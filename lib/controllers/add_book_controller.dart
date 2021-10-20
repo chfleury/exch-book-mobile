@@ -18,7 +18,7 @@ class AddBookController {
   late String title;
   late String conservationState;
   late String description;
-  late String category;
+  String category = 'all';
 
   late int imageId;
   upload(File imageFile) async {

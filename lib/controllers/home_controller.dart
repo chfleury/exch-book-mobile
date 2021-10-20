@@ -9,14 +9,14 @@ class HomeController {
   HomeController(this.api);
 
   final ApiService api;
-  var state = 'sucess'.obs;
+  var state = 'init'.obs;
   late List<Book> books;
 
-  fetch() async {
+  fetch(String category) async {
     state.value = 'loading';
 
     try {
-      books = await api.fetchBooks();
+      books = await api.fetchBooks(category);
       state.value = 'sucess';
     } catch (e) {
       state.value = 'error';

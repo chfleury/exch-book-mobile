@@ -25,12 +25,11 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     controller = HomeController(apiService);
-    fetchBooks();
     super.initState();
   }
 
-  fetchBooks() async {
-    await controller.fetch();
+  fetchBooks(category) async {
+    await controller.fetch(category);
   }
 
   @override
@@ -51,7 +50,27 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: Obx(() {
-        if (controller.state.value == 'loading') {
+        if (controller.state.value == 'init') {
+          return Center(
+            child: Column(children: [
+              Text('Selecione a Categoria:'),
+              TextButton(
+                  onPressed: () => {fetchBooks('all')},
+                  child: Text('Todas categorias')),
+              TextButton(
+                  onPressed: () => {fetchBooks('Fantasia')},
+                  child: Text('Fantasia')),
+              TextButton(
+                  onPressed: () => {fetchBooks('Drama')}, child: Text('Drama')),
+              TextButton(
+                  onPressed: () => {fetchBooks('Terror')},
+                  child: Text('Terror')),
+              TextButton(
+                  onPressed: () => {fetchBooks('Programação')},
+                  child: Text('Programação')),
+            ]),
+          );
+        } else if (controller.state.value == 'loading') {
           return Center(
             child: CircularProgressIndicator(),
           );

@@ -113,11 +113,13 @@ class ApiService {
     }
   }
 
-  Future fetchBooks() async {
+  Future fetchBooks(String category) async {
     final box = GetStorage();
     var id = box.read('user_id');
 
-    final url = Uri.parse('$baseUrl/booknotuser/$id');
+    final url = category != 'all'
+        ? Uri.parse('$baseUrl/booknotuser/$id?category=$category')
+        : Uri.parse('$baseUrl/booknotuser/$id');
     final response = await client.get(url, headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     });
